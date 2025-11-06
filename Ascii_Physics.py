@@ -3,7 +3,11 @@ import os
 
 # Scene Variables
 sceneX = 50
-sceneY = 25
+sceneY = 67
+
+# Rendering variables
+fps = 60
+currentFrame = 0
 
 sceneArray = [
 
@@ -17,7 +21,7 @@ class Position:
         
 class Ball:
     def __init__(self):
-        self.position = Position(0, 0) # starting positon
+        self.position = Position(5, 0) # starting positon
 
 prevPositon = []
 
@@ -38,16 +42,25 @@ def printScene():
 def drawBlank():
     clear()
     for i in range(sceneY):
-        sceneRow = ['`']*sceneX
-        sceneArray.append(sceneRow)
+        if i == sceneY-1:
+            sceneRow = ['¯']*sceneX
+            sceneArray.append(sceneRow)
+        else:
+            sceneRow = ['`']*sceneX
+            sceneArray.append(sceneRow)
+
 
 drawBlank()
 
 # Runtime
 while True:
+
 #Physics 
-    sceneArray[ball.position.y][ball.position.x] = '@'
+    sceneArray[round(ball.position.y)][ball.position.x] = '`'
+    ball.position.y = 0.5*(9.81/100)*(currentFrame*currentFrame)
+    sceneArray[round(ball.position.y)][ball.position.x] = '@'
 
 #Ascii Rendering
     printScene()
-    time.sleep(0.1)
+    currentFrame += 1
+    time.sleep(1/fps)
