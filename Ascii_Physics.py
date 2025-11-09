@@ -1,3 +1,4 @@
+import math
 import time
 import os
 
@@ -28,6 +29,7 @@ prevPositon = []
 ball = Ball()
 # Terminal Screen Control
     # clear terminal screen def
+    #clear function only works on debug from terminal -> it does not work on intelliJ's virtual environment
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -55,9 +57,9 @@ drawBlank()
 while True:
 
 #Physics 
-    sceneArray[round(ball.position.y)][ball.position.x] = '`'
+    sceneArray[math.floor(ball.position.y)][ball.position.x] = '`'
     ball.position.y = 0.5*(9.81/100)*(currentFrame*currentFrame)
-    sceneArray[round(ball.position.y)][ball.position.x] = '@'
+    sceneArray[math.floor(ball.position.y)][ball.position.x] = '@'
 
 #Ascii Rendering
     printScene()
