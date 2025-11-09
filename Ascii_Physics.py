@@ -18,7 +18,7 @@ class Position:
     def __init__(self, x, y):
         self.x = x  
         self.y = y
-        
+
 class Ball:
     def __init__(self):
         self.position = Position(5, 0) # starting positon
@@ -48,7 +48,6 @@ def drawBlank():
         else:
             sceneRow = ['`']*sceneX
             sceneArray.append(sceneRow)
-
 
 drawBlank()
 
