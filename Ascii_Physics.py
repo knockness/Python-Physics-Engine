@@ -1,66 +1,82 @@
+import math
+import random
 import time
 import os
 
 # Scene Variables
-sceneX = 50
-sceneY = 67
-
-# Rendering variables
+sceneX = 160
+sceneY = 80
 fps = 60
 currentFrame = 0
 
-sceneArray = [
-
-]
+sceneArray = []
 
 # Ball Variables
 class Position:
     def __init__(self, x, y):
-        self.x = x  
+        self.x = x
         self.y = y
-        
+
 class Ball:
     def __init__(self):
-        self.position = Position(5, 0) # starting positon
-
-prevPositon = []
+        self.position = Position(5, 5)
+        angle = random.randint(20, 70)
+        speed = random.randint(1, 3) #init velocity
+        self.vx = speed * math.cos(math.radians(angle))
+        self.vy = speed * math.sin(math.radians(angle))
 
 ball = Ball()
-# Terminal Screen Control
-    # clear terminal screen def
+
+# clear terminal screen
 def clear():
     os.system('cls' if os.name == 'nt' else 'clear')
 
-    # Print Written Scene
+# print scene
 def printScene():
     clear()
     for sublist in sceneArray:
-        print(" ".join(map(str, sublist)))
+        print("".join(map(str, sublist)))
 
-# Scene Writing
-    # draw blank screen def
+# draw blank scene
 def drawBlank():
-    clear()
+    sceneArray.clear()
     for i in range(sceneY):
-        if i == sceneY-1:
-            sceneRow = ['¯']*sceneX
-            sceneArray.append(sceneRow)
+        if i == sceneY - 1:
+            sceneRow = ['¯'] * sceneX
         else:
-            sceneRow = ['`']*sceneX
-            sceneArray.append(sceneRow)
-
-
-drawBlank()
+            sceneRow = ['`'] * sceneX
+            #this can be changed to ' ' instead
+        sceneArray.append(sceneRow)
 
 # Runtime
+gravity = -0.05
+
 while True:
+    drawBlank()
 
-#Physics 
-    sceneArray[round(ball.position.y)][ball.position.x] = '`'
-    ball.position.y = 0.5*(9.81/100)*(currentFrame*currentFrame)
-    sceneArray[round(ball.position.y)][ball.position.x] = '@'
+    ball.vy += gravity
+    ball.position.x += ball.vx
+    ball.position.y -= ball.vy
 
-#Ascii Rendering
+    if ball.position.x <= 0:
+        ball.position.x = 0
+        ball.vx *= -1
+    elif ball.position.x >= sceneX - 1:
+        ball.position.x = sceneX - 1
+        ball.vx *= -1
+
+    if ball.position.y >= sceneY - 2:
+        ball.position.y = sceneY - 2
+        ball.vy *= -0.8 # lose a velocity
+
+    if ball.position.y <= 0:
+        ball.position.y = 0
+        ball.vy *= -1
+
+    x = int(ball.position.x)
+    y = int(ball.position.y)
+    if 0 <= y < sceneY and 0 <= x < sceneX:
+        sceneArray[y][x] = '@'
+    ball.vx *= 0.99 #deceleration
     printScene()
-    currentFrame += 1
     time.sleep(1/fps)
