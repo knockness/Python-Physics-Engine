@@ -12,6 +12,9 @@ currentFrame = 0
 sceneArray = [
 
 ]
+# Physics Videos
+velocity = 1
+accelaration = 9.81
 
 # Ball Variables
 class Position:
@@ -54,12 +57,18 @@ drawBlank()
 
 # Runtime
 while True:
-
 #Physics 
+#Ball Accelaration
     sceneArray[round(ball.position.y)][ball.position.x] = '`'
-    ball.position.y = 0.5*(9.81/100)*(currentFrame*currentFrame)
-    sceneArray[round(ball.position.y)][ball.position.x] = '@'
+    ball.position.y += velocity + (accelaration/100) * currentFrame * currentFrame
 
+        #Ground Check 
+    if ball.position.y >= sceneY:
+         ball.position.y = sceneY - 1
+         currentFrame = 0
+         velocity = -5
+
+    sceneArray[round(ball.position.y)][ball.position.x] = '@'
 #Ascii Rendering
     printScene()
     currentFrame += 1
