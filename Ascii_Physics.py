@@ -12,9 +12,13 @@ currentFrame = 0
 sceneArray = [
 
 ]
-# Physics Videos
+# Physics Varables
 velocity = 1
 accelaration = 9.81
+initialHeight = 0
+
+#Coeficient of restitution, value between 0 and 1
+bounceElasticity = 0.9
 
 # Ball Variables
 class Position:
@@ -24,7 +28,7 @@ class Position:
         
 class Ball:
     def __init__(self):
-        self.position = Position(5, 0) # starting positon
+        self.position = Position(5, initialHeight) # starting positon
 
 prevPositon = []
 
@@ -60,13 +64,15 @@ while True:
 #Physics 
 #Ball Accelaration
     sceneArray[round(ball.position.y)][ball.position.x] = '`'
-    ball.position.y += velocity + (accelaration/100) * currentFrame * currentFrame
-
+    #check if the ball is ABOUT to be set to a position past the scene boundaries (not currently written yet)
+    ball.position.y += velocity + (accelaration/200) * currentFrame * currentFrame
         #Ground Check 
     if ball.position.y >= sceneY:
-         ball.position.y = sceneY - 1
+         ball.position.y = sceneY - 2
          currentFrame = 0
-         velocity = -5
+         velocity = -1*(bounceElasticity*velocity+3)
+
+    ball.position.y = min(max(ball.position.y, 0), sceneY - 2)
 
     sceneArray[round(ball.position.y)][ball.position.x] = '@'
 #Ascii Rendering
