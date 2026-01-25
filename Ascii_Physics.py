@@ -7,7 +7,7 @@ sceneY = 67
 
 # Rendering variables
 fps = 60
-currentFrame = 0
+framesFalling = 0
 
 sceneArray = [
 
@@ -18,7 +18,7 @@ accelaration = 9.81
 initialHeight = 0
 
 #Coeficient of restitution, value between 0 and 1
-bounceElasticity = 0.9
+bounceElasticity = 0.95
 
 # Ball Variables
 class Position:
@@ -48,14 +48,16 @@ def printScene():
     # draw blank screen def
 def drawBlank():
     clear()
-    for i in range(sceneY):
-        if i == sceneY-1:
-            sceneRow = ['¯']*sceneX
-            sceneArray.append(sceneRow)
-        else:
-            sceneRow = ['`']*sceneX
-            sceneArray.append(sceneRow)
-
+    for i in range(sceneY+1):
+         if i == sceneY:
+             sceneRow = ['']*sceneX #row researved for deubug variables
+             sceneArray.append(sceneRow)
+         elif i == sceneY - 1:
+             sceneRow = ['¯']*sceneX
+             sceneArray.append(sceneRow)
+         else:
+             sceneRow = ['`']*sceneX
+             sceneArray.append(sceneRow)
 
 drawBlank()
 
@@ -64,18 +66,22 @@ while True:
 #Physics 
 #Ball Accelaration
     sceneArray[round(ball.position.y)][ball.position.x] = '`'
-    #check if the ball is ABOUT to be set to a position past the scene boundaries (not currently written yet)
-    ball.position.y += velocity + (accelaration/200) * currentFrame * currentFrame
-        #Ground Check 
-    if ball.position.y >= sceneY:
-         ball.position.y = sceneY - 2
-         currentFrame = 0
-         velocity = -1*(bounceElasticity*velocity+3)
 
-    ball.position.y = min(max(ball.position.y, 0), sceneY - 2)
+    positionUpdate = velocity + (accelaration/200) * framesFalling * framesFalling
+    updatedPosition = ball.position.y + positionUpdate
+
+        #Ground Check 
+    if updatedPosition > sceneY - 2:
+        ball.position.y = sceneY - 2
+        framesFalling = 0
+        velocity = -1*(bounceElasticity*velocity+1.9)
+    else:
+        ball.position.y = updatedPosition
 
     sceneArray[round(ball.position.y)][ball.position.x] = '@'
+#Debug
+    sceneArray[67][0] = updatedPosition #
 #Ascii Rendering
     printScene()
-    currentFrame += 1
+    framesFalling += 1
     time.sleep(1/fps)
