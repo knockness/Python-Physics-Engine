@@ -14,35 +14,33 @@ framesFalling = 0
 velocity = 1
 accelaration = 9.81
 
-#Coeficient of restitution, value between 0 and 1
-bounceElasticity = 0.95
 prevPositon = []
 
-ball = objects.Ball()
+ball = objects.ball.ball
 
 scene.drawBlank()
 
 # Runtime
 while True:
 #Physics 
-#Ball Accelaration
-    scene.sceneArray[round(ball.position.y)][ball.position.x] = '`'
+        #Ball Accelaration
+    scene.sceneArray[ball.position.x, round(ball.position.y)] = '`'
 
     positionUpdate = velocity + (accelaration/200) * framesFalling * framesFalling
-    updatedPosition = ball.position.y + positionUpdate
+    updatedPosition = ball.position.y - positionUpdate
 
         #Ground Check 
-    if updatedPosition > scene.sceneY - 2:
-        ball.position.y = scene.sceneY - 2
+    if updatedPosition < 1:
+        ball.position.y = 1
         framesFalling = 0
-        velocity = -1*(bounceElasticity*velocity+1.9)
+        velocity = -1*(objects.ball.bounceElasticity*velocity+1.9)
     else:
         ball.position.y = updatedPosition
 
-    scene.sceneArray[round(ball.position.y)][ball.position.x] = '@'
-#Debug
-    scene.sceneArray[67][0] = updatedPosition #
-#Ascii Rendering
+    scene.sceneArray[ball.position.x, round(ball.position.y)] = '@'
+        #Debug
+    scene.sceneArray[0, -1] = updatedPosition
+        #Ascii Rendering
     scene.printScene()
     framesFalling += 1
     time.sleep(1/fps)

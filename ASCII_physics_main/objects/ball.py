@@ -1,5 +1,5 @@
 # Physics Varables
-initialHeight = 0
+initialHeight = 60
 
 #Coeficient of restitution, value between 0 and 1
 bounceElasticity = 0.95
@@ -14,6 +14,7 @@ class Ball:
     def __init__(self):
         self.position = Position(5, initialHeight) # starting positon
 
-prevPositon = []
+#Coeficient of restitution, value between 0 and 1
+bounceElasticity = 0.95
 
 ball = Ball()
