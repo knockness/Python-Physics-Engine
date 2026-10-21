@@ -1,10 +1,6 @@
 import os
 import subprocess
 
-# Scene Variables
-sceneX = 50
-sceneY = 67
-
 class Cartesian:
     # Making the array
     def __init__(self, width, height):
@@ -24,25 +20,24 @@ class Cartesian:
     # Handles setting items in the array
     def __setitem__(self, coords, value):
         x, y = coords
-        self.matrix[(self.height - 1) - y][x] = value
+        self.matrix[(self.height - 1) - y][x] = value # Conversion of y coordinates from 0 being the top to 0 being the bottom to mimic an actual cartesian plane
     # Handles getting values in the array
     def __getitem__(self, coords):
         x, y = coords
-        return self.matrix[(self.height - 1) - y][x]
+        return self.matrix[(self.height - 1) - y][x] # Same conversion
     
 # Scene Writing
     # clear terminal screen def
 def clear():
     subprocess.run(['cls' if os.name == 'nt' else 'clear'], shell=True)
 
-    # Print Written Scene def
-def printScene():
+    # Prints the Scene currently written in the buffer
+def printScene(sceneName):
     clear()
-    for sublist in sceneArray.matrix:
+    for sublist in sceneName.matrix:
         print(" ".join(map(str, sublist)))
 
-    # draw blank screen def
-def drawBlank():
-    clear()
-    global sceneArray
-    sceneArray = Cartesian(sceneX, sceneY)
+    # defines a scene
+def createScene(width, height):
+    clear() # Ensures only one scene at a time
+    return Cartesian(width, height)

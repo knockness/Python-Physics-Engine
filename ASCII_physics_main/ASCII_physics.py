@@ -18,13 +18,13 @@ prevPositon = []
 
 ball = objects.ball.ball
 
-scene.drawBlank()
+myScene = scene.createScene(50, 67)
 
 # Runtime
 while True:
 #Physics 
         #Ball Accelaration
-    scene.sceneArray[ball.position.x, round(ball.position.y)] = '`'
+    myScene[ball.position.x, round(ball.position.y)] = '`'
 
     positionUpdate = velocity + (accelaration/200) * framesFalling * framesFalling
     updatedPosition = ball.position.y - positionUpdate
@@ -37,10 +37,10 @@ while True:
     else:
         ball.position.y = updatedPosition
 
-    scene.sceneArray[ball.position.x, round(ball.position.y)] = '@'
+    myScene[ball.position.x, round(ball.position.y)] = '@'
         #Debug
-    scene.sceneArray[0, -1] = updatedPosition
+    myScene[0, -1] = updatedPosition
         #Ascii Rendering
-    scene.printScene()
+    scene.printScene(myScene)
     framesFalling += 1
     time.sleep(1/fps)
