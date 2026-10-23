@@ -1,8 +1,11 @@
-import os
+# Default Python Imports
 import subprocess
+import os
+
+# Project Imports
+import globals
 
 class Cartesian:
-    # Making the array
     def __init__(self, width, height):
         self.width = width
         self.height = height
@@ -17,11 +20,9 @@ class Cartesian:
                  else:
                      sceneRow = ['`']*width
                      self.matrix.append(sceneRow)
-    # Handles setting items in the array
     def __setitem__(self, coords, value):
         x, y = coords
         self.matrix[(self.height - 1) - y][x] = value # Conversion of y coordinates from 0 being the top to 0 being the bottom to mimic an actual cartesian plane
-    # Handles getting values in the array
     def __getitem__(self, coords):
         x, y = coords
         return self.matrix[(self.height - 1) - y][x] # Same conversion
@@ -40,4 +41,6 @@ def printScene(sceneName):
     # defines a scene
 def createScene(width, height):
     clear() # Ensures only one scene at a time
-    return Cartesian(width, height)
+    newScene = Cartesian(width, height)
+    globals.currentScene = newScene
+    return newScene
