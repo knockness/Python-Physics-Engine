@@ -82,8 +82,6 @@ class Rigidbody:
         # transform update
             # position change application
         self.transform.position += self.positionStep
-        if self.transform.position.x < 0: self.transform.position.x = 0
-        if self.transform.position.y < 0: self.transform.position.y = 0
             # Angle Change
         self.transform.rotation += self.rotationStep
     # Only updates the render based on the properties modified in update
