@@ -10,7 +10,7 @@ import scene
 fps = 60
 
 # pixels per meter
-ppm = 7
+globals.pixelsPerMeter = 7
 
 prevPositon = []
 
